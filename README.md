@@ -1,1 +1,1 @@
-# Qt_Studay
+# Qt_Study
