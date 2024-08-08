@@ -1,44 +1,32 @@
 #include "widget.h"
+
 #include<QLabel>
 #include<QPushButton>
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent),m_isFirst(true)
 {
-    m_label = new QLabel("0",this);
+    m_label = new QLabel("0",this);     // 레이블 객체 동적 할당, Widget윈도우에 자식 위젯으로 설정
     m_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        // void setAlignment(Qt::Alignment)
+        // This property holds the alignment of the label's contents
+        // default, left-aligned and vertically-centered
     m_label->setGeometry(10,5,230,40);
-
-    connect(m_buttons.at(0),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(1),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(2),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(4),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(5),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(6),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(8),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(9),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(10),SIGNAL(clicked()),SLOT(setNum()));
-    connect(m_buttons.at(12),SIGNAL(clicked()),SLOT(setNum()));
-
-    connect(m_buttons.at(3),SIGNAL(clicked()),SLOT(setOp()));
-    connect(m_buttons.at(7),SIGNAL(clicked()),SLOT(setOp()));
-    connect(m_buttons.at(11),SIGNAL(clicked()),SLOT(setOp()));
-    connect(m_buttons.at(15),SIGNAL(clicked()),SLOT(setOp()));
+        //  void setGeometry(int x, int y, int w, int h)
+        //  void setGeometry(const QRect &)
+        //  QRect r1(100, 200, 11, 16);
+        //  QRect r2(QPoint(100, 200), QSize(11, 16));
 
 
-    connect(m_buttons.at(13),SIGNAL(clicked()),SLOT(clear()));
-    //clear
 
-    connect(m_buttons.at(14),SIGNAL(clicked()),SLOT(calculator()));
-    // =
 
     // 함수 포인터 사용
-    // const char *methods[16] = {
-    //     SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
-    //     SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
-    //     SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
-    //     SLOT(setNum()),SLOT(clear()),SLOT(calculator()),SLOT(setOp()),
-    // }
+    const char *methods[16] = {
+        SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
+        SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
+        SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
+        SLOT(setNum()),SLOT(clear()),SLOT(calculator()),SLOT(setOp()),
+    };
 
 
     const char ButtonChar[16][2] = {
@@ -47,17 +35,48 @@ Widget::Widget(QWidget *parent)
         "1","2","3","-",
         "0","C","=","+"
     };
+
+    QGridLayout *gridLayout = new QGridLayout();
+
     for(int  y = 0; y < WIDTH; y++)
     {
         for(int x = 0; x < WIDTH; x++)
         {
             int n = x+y*WIDTH;
             m_buttons.append(new QPushButton(ButtonChar[x+y*WIDTH],this));
-            m_buttons.at(x+y*WIDTH)->setGeometry(5+60*x,50+60*y,60,60);
-            //connect(m_buttons.at(n),SIGNAL(clicked()),methods[n]);
+            gridLayout->addWidget(m_buttons.at(n),n/WIDTH,n%WIDTH);
+            connect(m_buttons.at(n),SIGNAL(clicked()),methods[n]);
         }
     }
 
+    // connect(m_buttons.at(0),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(1),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(2),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(4),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(5),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(6),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(8),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(9),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(10),SIGNAL(clicked()),SLOT(setNum()));
+    // connect(m_buttons.at(12),SIGNAL(clicked()),SLOT(setNum()));
+
+    // connect(m_buttons.at(3),SIGNAL(clicked()),SLOT(setOp()));
+    // connect(m_buttons.at(7),SIGNAL(clicked()),SLOT(setOp()));
+    // connect(m_buttons.at(11),SIGNAL(clicked()),SLOT(setOp()));
+    // connect(m_buttons.at(15),SIGNAL(clicked()),SLOT(setOp()));
+
+
+    // connect(m_buttons.at(13),SIGNAL(clicked()),SLOT(clear()));
+    // //clear
+
+    // connect(m_buttons.at(14),SIGNAL(clicked()),SLOT(calculator()));
+    // // =
+
+    QVBoxLayout *vBoxLayout = new QVBoxLayout(this);
+    vBoxLayout->setContentsMargins(6,6,6,6);
+    vBoxLayout->addWidget(m_label);
+    vBoxLayout->addLayout(gridLayout);
+    setLayout(vBoxLayout);
 
 
 }
@@ -97,30 +116,29 @@ void Widget::calculator()
     m_isFirst = true;
     switch(m_op[0].toLatin1())
     {
-        case '+':
-            result = m_num1.toDouble()+m_label->text().toDouble();
-            break;
-        case '-':
-            result = m_num1.toDouble()-m_label->text().toDouble();
-            break;
-        case '*':
-            result = m_num1.toDouble()*m_label->text().toDouble();
-            break;
-        case '/':
-            if(m_label->text().toDouble() != 0)
-            {
-                result = m_num1.toDouble()/m_label->text().toDouble();
-            }
-            else
-            {
-                m_label->setText(" error : connot divide by zero");
-                return ;
-            }
-            break;
+    case '+':
+        result = m_num1.toDouble()+m_label->text().toDouble();
+        break;
+    case '-':
+        result = m_num1.toDouble()-m_label->text().toDouble();
+        break;
+    case 'x':
+        result = m_num1.toDouble()*m_label->text().toDouble();
+        break;
+    case '/':
+        if(m_label->text().toDouble() != 0)
+        {
+            result = m_num1.toDouble()/m_label->text().toDouble();
+        }
+        else
+        {
+            m_label->setText(" error : connot divide by zero");
+            return ;
+        }
+        break;
     }
     m_label->setText(QString::number(result));
 
-    setMinimumSize(250,295);
-    setMaximumSize(250,295);
+
     setWindowTitle("Calculator");
 }

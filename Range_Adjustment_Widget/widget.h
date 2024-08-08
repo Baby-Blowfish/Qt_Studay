@@ -6,7 +6,9 @@
 class QSlider;
 class QScrollBar;
 class QLabel;
-class QCscrollArea;
+class QScrollArea;
+class QDial;
+class QSpinBox;
 
 class Widget : public QWidget
 {
@@ -19,6 +21,8 @@ private:
     QSlider *slider;
     QScrollBar *scrollBar;
     QLabel *label;
-    QCscrollArea *scrollArea
+    QScrollArea *scrollArea;
+    QDial *dial;
+    QSpinBox *spinBox;
 };
 #endif // WIDGET_H
