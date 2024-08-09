@@ -11,16 +11,23 @@ Widget::Widget(QWidget *parent)
         // void setAlignment(Qt::Alignment)
         // This property holds the alignment of the label's contents
         // default, left-aligned and vertically-centered
-    m_label->setGeometry(10,5,230,40);
+    m_label->setGeometry(10,5,230,40);  // 위젯 크기 설정
         //  void setGeometry(int x, int y, int w, int h)
         //  void setGeometry(const QRect &)
         //  QRect r1(100, 200, 11, 16);
         //  QRect r2(QPoint(100, 200), QSize(11, 16));
 
 
+    // 버튼에 표시될 문자열, 버튼은 문자열만 표현 가능
+    const char ButtonChar[16][2] = {
+        "7","8","9","/",
+        "4","5","6","x",
+        "1","2","3","-",
+        "0","C","=","+"
+    };
+    // QPushButton 생성자의 첫번째 인자는 문자열 or QString만 가능
 
-
-    // 함수 포인터 사용
+    // 슬롯 매크로는 const char*형
     const char *methods[16] = {
         SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
         SLOT(setNum()),SLOT(setNum()),SLOT(setNum()),SLOT(setOp()),
@@ -28,27 +35,7 @@ Widget::Widget(QWidget *parent)
         SLOT(setNum()),SLOT(clear()),SLOT(calculator()),SLOT(setOp()),
     };
 
-
-    const char ButtonChar[16][2] = {
-        "7","8","9","/",
-        "4","5","6","x",
-        "1","2","3","-",
-        "0","C","=","+"
-    };
-
-    QGridLayout *gridLayout = new QGridLayout();
-
-    for(int  y = 0; y < WIDTH; y++)
-    {
-        for(int x = 0; x < WIDTH; x++)
-        {
-            int n = x+y*WIDTH;
-            m_buttons.append(new QPushButton(ButtonChar[x+y*WIDTH],this));
-            gridLayout->addWidget(m_buttons.at(n),n/WIDTH,n%WIDTH);
-            connect(m_buttons.at(n),SIGNAL(clicked()),methods[n]);
-        }
-    }
-
+    // 시그널과 슬롯 선언
     // connect(m_buttons.at(0),SIGNAL(clicked()),SLOT(setNum()));
     // connect(m_buttons.at(1),SIGNAL(clicked()),SLOT(setNum()));
     // connect(m_buttons.at(2),SIGNAL(clicked()),SLOT(setNum()));
@@ -72,12 +59,22 @@ Widget::Widget(QWidget *parent)
     // connect(m_buttons.at(14),SIGNAL(clicked()),SLOT(calculator()));
     // // =
 
-    QVBoxLayout *vBoxLayout = new QVBoxLayout(this);
-    vBoxLayout->setContentsMargins(6,6,6,6);
-    vBoxLayout->addWidget(m_label);
-    vBoxLayout->addLayout(gridLayout);
-    setLayout(vBoxLayout);
 
+    // 4 x 4로 배치, y가 행, x가 열
+    for(int  y = 0; y < WIDTH; y++)
+    {
+        for(int x = 0; x < WIDTH; x++)
+        {
+            int n = x+y*WIDTH;  // 2차원을 1차원으로 바꾸는 공식
+            m_buttons.append(new QPushButton(ButtonChar[n],this));
+            m_buttons[n]->setGeometry(0+x*60,45+y*60,60,60);
+            connect(m_buttons.at(n),SIGNAL(clicked()),methods[n]);
+        }
+    }
+
+    // setMinimumSize(250,295);    // 윈도우의 최소 크기 설정
+    // setMaximumSize(250,295);    // 윈도우의 최대 크기 설정
+    setWindowTitle("Calculator");
 
 }
 
@@ -91,8 +88,8 @@ void Widget::setNum()
     if(m_label != nullptr)
     {
         QString lStr = m_label->text();
-        m_label->setText((lStr == "0"|m_isFirst)?bStr:lStr+bStr);
-        m_isFirst =false;
+        m_label->setText((lStr == "0"||m_isFirst)?bStr:lStr+bStr);
+        m_isFirst =false;       //   기존의 값 뒤에 연겷래서 입력
     }
 }
 void Widget::setOp()
@@ -138,7 +135,6 @@ void Widget::calculator()
         break;
     }
     m_label->setText(QString::number(result));
+    //Returns a string equivalent of the number n
 
-
-    setWindowTitle("Calculator");
 }
