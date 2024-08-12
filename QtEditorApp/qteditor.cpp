@@ -12,7 +12,14 @@
 #include <QDockWidget>
 #include <QMdiArea>
 #include <QMdiSubWindow>
-
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QDebug>
+#include <QColorDialog>
+#include <QFontDialog>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QHash>
 
 QtEditor::QtEditor(QWidget *parent)
     : QMainWindow(parent)
@@ -24,12 +31,7 @@ QtEditor::QtEditor(QWidget *parent)
     connect(mdiArea,SIGNAL(subWindowActivated(QMdiSubWindow*)),SLOT(setFontWidget()));
     //connect(mdiArea,QMdiArea::subWindowActivated(),this,QtEditor::setFontWidget);
     setCentralWidget(mdiArea);
-#if 0
-    QTextEdit *textedit = new QTextEdit(this);
-    mdiArea->addSubWindow(textedit);
-#else
-    QTextEdit *textedit = newFile();
-#endif
+
 
 
 
@@ -79,7 +81,7 @@ QtEditor::QtEditor(QWidget *parent)
         // 템플릿의 구체화 사용 - const char* 즉 문자열일 경우 동작 설정
 
     QAction *openAct = makeAction(":/images/open.png",tr("&Open"),tr("Ctrl+O"),
-                                  tr("open a file"),[](){ qDebug("open File");});
+                                  tr("open a file"),this,SLOT(openFile()));
         // 템플릿의 Functor를 사용하여 람다 함수 사용
 
     QAction *saveAsAct = makeAction(":/images/saveAs.png",tr("&SaveAs"),tr("Ctrl+Shift+s"),
@@ -116,7 +118,7 @@ QtEditor::QtEditor(QWidget *parent)
     fileToolBar->addSeparator();
     fileToolBar->addAction(quitAct);
 
-    QMenu *windowMenu = menubar ->addMenu("&Window");
+    windowMenu = menubar ->addMenu("&Window");
     QMenu *toolbarMenu = windowMenu ->addMenu("&Toolbar");
     windowMenu->addSeparator();
     toolbarMenu->addAction(fileToolBar->toggleViewAction());
@@ -165,7 +167,12 @@ QtEditor::QtEditor(QWidget *parent)
 
 
 
-
+#if 0
+    QTextEdit *textedit = new QTextEdit(this);
+    mdiArea->addSubWindow(textedit);
+#else
+    QTextEdit *textedit = newFile();
+#endif
 
 
 
@@ -290,12 +297,42 @@ QtEditor::QtEditor(QWidget *parent)
     windowMenu->addSeparator();
 
 
+    //-----------------------------<QMessageBox>--------------------------------------
+    QMenu *helpMenu = menubar->addMenu("&Help");
+
+
+    QAction *aboutAct = makeAction("about.png",tr("&about"),tr("Ctrl+shift+a"),
+                                   tr("about"),this,SLOT(about()));
+    QAction *aboutQtAct = makeAction("aboutqt.png",tr("&aboutQt"),tr("Ctrl+shift+q"),
+                                     tr("aboutQt"),qApp,SLOT(aboutQt()));
+    helpMenu->addAction(aboutAct);
+    helpMenu->addAction(aboutQtAct);
+
+    connect(aboutAct,SIGNAL(triggered()),this,SLOT(about()));
 
 
 
+
+    //-----------------------------<QColorDialog>--------------------------------------
+
+    //QColor color = QColorDialog::getColor(Qt::green,this);
+    connect(colorAct,SIGNAL(triggered()),this,SLOT(setColor()));
+
+
+    //-------------------------------<QFontDialog Class>-----------------------------
+    connect(fontAct,SIGNAL(triggered()),this,SLOT(setFont()));
+
+
+    //-------------------------------<QText Editor 위젯 관리>-----------------------------
 
 
 }
+
+
+
+
+
+
 
 QtEditor::~QtEditor() {}
 
@@ -303,28 +340,154 @@ QtEditor::~QtEditor() {}
 QTextEdit *QtEditor::newFile()
 {
     qDebug("Mak New File");
+
+    QAction *newFileAct = makeAction(":/images/file.png",tr("&New file"),tr(""),
+                                     tr("New File"),this,SLOT(selectWindow()));
+    windowMenu->addAction(newFileAct);
+    windowMenu->addSeparator();
+
     QTextEdit *textedit = new QTextEdit;
     mdiArea->addSubWindow(textedit);
     textedit->show();
     connect(textedit,SIGNAL(cursorPositionChanged()),SLOT(setFontWidget()));
+
+
+    connect(textedit,SIGNAL(destroyed(QObject*)),textedit,SLOT(deleteLater()));
+    connect(textedit,SIGNAL(destroyed(QObject*)),newFileAct,SLOT(deleteLater()));
+
+
+    windowHash[newFileAct] = textedit;
+
     return textedit;
 
 }
+
+void QtEditor::selectWindow()
+{
+    QTextEdit *textedit = (QTextEdit*)windowHash[(QAction*)sender()];
+
+    if(textedit != nullptr) {
+        textedit->setFocus();
+    }
+
+    textedit->setFocus();
+
+}
+
 void QtEditor::openFile()
 {
-    qDebug("open File");
+    qDebug("Open a File");
+    QString fileName = QFileDialog::getOpenFileName(this,
+    tr("Selet file to open"), ".", tr("Text files (*.txt *.html *.htm *.c *cpp *.h *.cs)"));
+
+    qDebug()<<fileName;
+
+    if(!fileName.length()) return;
+
+    QFileInfo fileInfo(fileName);
+
+    if(fileInfo.isReadable())
+    {
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly|QIODevice::Text);
+        QByteArray msg = file.readAll();
+        file.close();
+
+        QTextEdit *textedit = newFile();
+        textedit->setWindowTitle(fileName);
+
+        windowHash.key(textedit)->setText(fileName);
+
+        if(fileInfo.suffix() == "htm"||fileInfo.suffix()=="html")
+            textedit->setHtml(msg);
+        else
+            textedit->setPlainText(msg);
+    } else
+        QMessageBox::warning(this,"Error","Can't Read this file",QMessageBox::Ok);
+
 }
+
+
 void QtEditor::saveFile()
 {
-    qDebug("save File");
+    qDebug("Save this file");
+
+    QMdiSubWindow *subWindow = mdiArea->currentSubWindow( );
+
+    if(subWindow != nullptr) {
+        QTextEdit *textedit = dynamic_cast<QTextEdit*>(subWindow->widget( ));
+
+        QString fileName = textedit->windowTitle();
+
+        if(!fileName.length())
+        {
+            QString fileName = QFileDialog::getSaveFileName(this, tr("Selet file to save"),
+                 QDir::homePath(), tr("Text files (*.txt *.html *.htm *.c *cpp *.h *.cs)"));
+            if(!fileName.length()) return;
+            textedit->setWindowTitle(fileName);
+            windowHash.key(textedit)->setText(fileName);
+        }
+
+        QFile file(fileName);
+        file.open(QIODevice::WriteOnly|QIODevice::Text);
+        QFileInfo fileInfo(fileName);
+        if(fileInfo.isWritable()){
+            QByteArray msg = textedit->toHtml().toUtf8();
+            file.write(msg);
+        }
+        else
+            QMessageBox::warning(this,"Error","Can't save this file",QMessageBox::Ok);
+        file.close();
+    }
+
 }
+
 void QtEditor::saveAsFile()
 {
     qDebug("saveASFile");
+
+    QMdiSubWindow *subWindow = mdiArea->currentSubWindow( );
+
+    if(subWindow != nullptr)
+    {
+        QTextEdit *textedit = qobject_cast<QTextEdit*>(subWindow->widget( ));
+
+        QString fileName = textedit->windowTitle();
+
+        if(!fileName.length())
+        {
+            QString fileName = QFileDialog::getSaveFileName(this, tr("Selet file to save"),
+                                                            QDir::homePath(), tr("Text files (*.txt *.html *.htm *.c *cpp *.h *.cs)"));
+            if(!fileName.length()) return;
+            textedit->setWindowTitle(fileName);
+            windowHash.key(textedit)->setText(fileName);
+        }
+
+        QFile file(fileName);
+        file.open(QIODevice::WriteOnly|QIODevice::Text);
+        QFileInfo fileInfo(fileName);
+        if(fileInfo.isWritable()){
+            QByteArray msg = textedit->toHtml().toUtf8();
+            file.write(msg);
+        }
+        else
+            QMessageBox::warning(this,"Error","Can't save this file",QMessageBox::Ok);
+        file.close();
+    }
+
+
+
 }
 void QtEditor::printFile()
 {
-    qDebug("print File");
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setFullPage(true);
+    QPrintDialog printDialog(&printer, this);
+    if(printDialog.exec()==QDialog::Accepted)
+    {
+        QTextEdit *textedit = (QTextEdit*)mdiArea->currentSubWindow()->widget();
+        textedit->print(&printer);
+    }
 }
 
 
@@ -356,41 +519,57 @@ QAction *QtEditor::makeAction(QString icon, QString text, const char* shortCut, 
 }
 
 
-// 람다 함수 사용
-template <typename T, typename Functor>
-QAction *QtEditor::makeAction(QString icon, QString text, T shortCut, QString toolTip,
-                    Functor lambda)
-{
-    QAction *act = new QAction(text, this);
-    if(icon.length())
-        act->setIcon(QIcon(icon));
-    QKeySequence keySequence(shortCut);
-    act->setShortcut(keySequence);
-    act->setStatusTip(toolTip);
-    act->setToolTip(toolTip);
-    connect(act,&QAction::triggered,this,lambda);
-    return act;
-}
+// // 람다 함수 사용
+// template <typename T, typename Functor>
+// QAction *QtEditor::makeAction(QString icon, QString text, T shortCut, QString toolTip,
+//                     Functor lambda)
+// {
+//     QAction *act = new QAction(text, this);
+//     if(icon.length())
+//         act->setIcon(QIcon(icon));
+//     QKeySequence keySequence(shortCut);
+//     act->setShortcut(keySequence);
+//     act->setStatusTip(toolTip);
+//     act->setToolTip(toolTip);
+//     connect(act,&QAction::triggered,this,lambda);
+//     return act;
+// }
 
 void QtEditor::setTextFont(QFont font)
 {
-    QTextEdit *textedit = (QTextEdit*)mdiArea->currentSubWindow()->widget();
-    textedit->setCurrentFont(font);
+    QMdiSubWindow *subWindow  = mdiArea->currentSubWindow();
+    if(subWindow != nullptr)
+    {
+        QTextEdit *textedit = dynamic_cast<QTextEdit*>(subWindow->widget());
+        textedit->setCurrentFont(font);
+    }
+
 }
 
 void QtEditor::setTextSize(qreal size)
 {
-    QTextEdit *textedit = (QTextEdit*)mdiArea->currentSubWindow()->widget();
-    QFont font = textedit -> currentFont();
-    font.setPointSizeF(size);
-    textedit->setCurrentFont(font);
+
+    QMdiSubWindow *subWindow  = mdiArea->currentSubWindow();
+    if(subWindow != nullptr)
+    {
+        QTextEdit *textedit = dynamic_cast<QTextEdit*>(subWindow->widget());
+        QFont font = textedit -> currentFont();
+        font.setPointSizeF(size);
+        textedit->setCurrentFont(font);
+    }
+
 }
 void QtEditor::setFontWidget()
 {
-    QTextEdit *textedit = (QTextEdit*)mdiArea->currentSubWindow()->widget();
-    QFont font = textedit ->currentFont();
-    fontComboBox->setCurrentFont(font);
-    sizeSpinBox->setValue(font.pointSizeF());
+    QMdiSubWindow *subWindow  = mdiArea->currentSubWindow();
+    if(subWindow != nullptr)
+    {
+        QTextEdit *textedit = dynamic_cast<QTextEdit*>(subWindow->widget());
+        QFont font = textedit ->currentFont();
+        fontComboBox->setCurrentFont(font);
+        sizeSpinBox->setValue(font.pointSizeF());
+    }
+
 }
 
 void QtEditor::undo()
@@ -402,3 +581,32 @@ void QtEditor::undo()
         textedit->undo();
     }
 }
+
+void QtEditor::about()
+{
+    QMessageBox::question(this,"QMessageBox::showQuestion()","Question Message",
+                          QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+}
+
+void QtEditor::setColor()
+{
+    QTextEdit *textedit = (QTextEdit*)mdiArea->currentSubWindow()->widget();
+    QColor color = QColorDialog::getColor(textedit->textColor(),this);
+    if(color.isValid()) textedit->setTextColor(color);
+}
+
+void QtEditor::setFont()
+{
+    bool ok;
+    QTextEdit *textedit = (QTextEdit*)mdiArea->currentSubWindow()->widget();
+    QFont font = QFontDialog::getFont(&ok, QFont("Helvetica [Cronyx]", 10), this);
+    if (ok) {
+        textedit->setCurrentFont(font);
+    } else {
+        // the user canceled the dialog; font is set to the initial
+        // value, in this case Helvetica [Cronyx], 10
+    }
+
+}
+
+

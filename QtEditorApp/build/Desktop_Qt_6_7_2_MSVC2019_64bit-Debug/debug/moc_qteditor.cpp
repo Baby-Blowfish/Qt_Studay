@@ -48,7 +48,11 @@ constexpr auto qt_meta_stringdata_CLASSQtEditorENDCLASS = QtMocHelpers::stringDa
     "setTextSize",
     "size",
     "setFontWidget",
-    "undo"
+    "undo",
+    "about",
+    "setColor",
+    "setFont",
+    "selectWindow"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -61,7 +65,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSQtEditorENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -69,15 +73,19 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSQtEditorENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   68,    3, 0x0a,    1 /* Public */,
-       4,    0,   69,    3, 0x0a,    2 /* Public */,
-       5,    0,   70,    3, 0x0a,    3 /* Public */,
-       6,    0,   71,    3, 0x0a,    4 /* Public */,
-       7,    0,   72,    3, 0x0a,    5 /* Public */,
-       8,    1,   73,    3, 0x0a,    6 /* Public */,
-      10,    1,   76,    3, 0x0a,    8 /* Public */,
-      12,    0,   79,    3, 0x0a,   10 /* Public */,
-      13,    0,   80,    3, 0x0a,   11 /* Public */,
+       1,    0,   92,    3, 0x0a,    1 /* Public */,
+       4,    0,   93,    3, 0x0a,    2 /* Public */,
+       5,    0,   94,    3, 0x0a,    3 /* Public */,
+       6,    0,   95,    3, 0x0a,    4 /* Public */,
+       7,    0,   96,    3, 0x0a,    5 /* Public */,
+       8,    1,   97,    3, 0x0a,    6 /* Public */,
+      10,    1,  100,    3, 0x0a,    8 /* Public */,
+      12,    0,  103,    3, 0x0a,   10 /* Public */,
+      13,    0,  104,    3, 0x0a,   11 /* Public */,
+      14,    0,  105,    3, 0x0a,   12 /* Public */,
+      15,    0,  106,    3, 0x0a,   13 /* Public */,
+      16,    0,  107,    3, 0x0a,   14 /* Public */,
+      17,    0,  108,    3, 0x0a,   15 /* Public */,
 
  // slots: parameters
     0x80000000 | 2,
@@ -87,6 +95,10 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSQtEditorENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::QFont,    9,
     QMetaType::Void, QMetaType::QReal,   11,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -121,6 +133,14 @@ Q_CONSTINIT const QMetaObject QtEditor::staticMetaObject = { {
         // method 'setFontWidget'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'undo'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'about'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'setColor'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'setFont'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'selectWindow'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -142,6 +162,10 @@ void QtEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 6: _t->setTextSize((*reinterpret_cast< std::add_pointer_t<qreal>>(_a[1]))); break;
         case 7: _t->setFontWidget(); break;
         case 8: _t->undo(); break;
+        case 9: _t->about(); break;
+        case 10: _t->setColor(); break;
+        case 11: _t->setFont(); break;
+        case 12: _t->selectWindow(); break;
         default: ;
         }
     }
@@ -166,13 +190,13 @@ int QtEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 13;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 13)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 9;
+        _id -= 13;
     }
     return _id;
 }

@@ -1,39 +1,35 @@
+/*-----------------------------------Class header-------------------------------------*/
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QWidget>
-#include <QVector>
+#include <QWidget>  // QWidget 클래스 포함
+#include <QVector>  // QVector 클래스 포함
 
-class QLabel;
-class QPushButton;
+class QLabel;  // QLabel 클래스 전방 선언
+class QPushButton;  // QPushButton 클래스 전방 선언
 
-// 전방 참조, 헤더파일을 include 하는 것보다 가벼움
-// 객체 선언까지만 가능 그 이외에 내부에 접근하려면 헤더파일을 include 해야함.
-
+// Widget 클래스 선언, QWidget을 상속받음
 class Widget : public QWidget
 {
-    Q_OBJECT
+    Q_OBJECT  // Qt의 시그널과 슬롯 매커니즘을 사용하기 위한 매크로
 
 public:
+    // 생성자와 소멸자 선언
     Widget(QWidget *parent = nullptr);
     ~Widget();
+
 private:
-    QLabel *m_label;    // 헝가리안 표기법 사용(클래스의 멤버 변수)
-
-    QVector<QPushButton*> m_buttons;
-
-    QString m_num1,m_op;
-
-    bool m_isFirst;
-
-    const qint32 WIDTH = 4; // q붙은것은 qt의 자료형임
-    // 상수를 정의시 define문은 메모리을 잡지 않지만 컴파일라가 자료형을 특정하지 못하므로 에러를 잡지 못함.
-    // const 문은 메모리에 잡히지만 컴파일러가 타입을 검사하므로 에러를 확인 할 수 있음.
+    QLabel *m_label;  // QLabel 멤버 변수, 헝가리안 표기법 사용
+    QVector<QPushButton*> m_buttons;  // QPushButton 포인터의 벡터
+    QString m_num1, m_op;  // 첫 번째 숫자와 연산자 저장을 위한 QString
+    bool m_isFirst;  // 첫 번째 입력 여부를 체크하는 불리언 변수
+    const qint32 WIDTH = 4;  // 버튼 배열의 폭, 정수형 상수
 
 public slots:
-    void setNum();
-    void setOp();
-    void clear();
-    void calculator();
+    void setNum();  // 숫자 버튼이 눌렸을 때 호출되는 슬롯
+    void setOp();  // 연산자 버튼이 눌렸을 때 호출되는 슬롯
+    void clear();  // 클리어 버튼이 눌렸을 때 호출되는 슬롯
+    void calculator();  // 계산 버튼이 눌렸을 때 호출되는 슬롯
 };
 #endif // WIDGET_H
+

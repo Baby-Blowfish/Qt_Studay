@@ -259,12 +259,14 @@ Makefile: ..\..\QtEditorApp.pro C:\Qt\6.7.2\msvc2019_64\mkspecs\win32-msvc\qmake
 		C:\Qt\6.7.2\msvc2019_64\mkspecs\features\yacc.prf \
 		C:\Qt\6.7.2\msvc2019_64\mkspecs\features\lex.prf \
 		..\..\QtEditorApp.pro \
+		C:\Qt\6.7.2\msvc2019_64\lib\Qt6PrintSupport.prl \
 		C:\Qt\6.7.2\msvc2019_64\lib\Qt6Widgets.prl \
 		C:\Qt\6.7.2\msvc2019_64\lib\Qt6Gui.prl \
 		C:\Qt\6.7.2\msvc2019_64\lib\Qt6Core.prl \
 		C:\Qt\6.7.2\msvc2019_64\lib\Qt6EntryPoint.prl \
 		C:\Qt\6.7.2\msvc2019_64\mkspecs\features\build_pass.prf \
 		..\..\qteditor.qrc \
+		C:\Qt\6.7.2\msvc2019_64\lib\Qt6PrintSupportd.prl \
 		C:\Qt\6.7.2\msvc2019_64\lib\Qt6Widgetsd.prl \
 		C:\Qt\6.7.2\msvc2019_64\lib\Qt6Guid.prl \
 		C:\Qt\6.7.2\msvc2019_64\lib\Qt6Cored.prl \
@@ -445,12 +447,14 @@ C:\Qt\6.7.2\msvc2019_64\mkspecs\features\exceptions.prf:
 C:\Qt\6.7.2\msvc2019_64\mkspecs\features\yacc.prf:
 C:\Qt\6.7.2\msvc2019_64\mkspecs\features\lex.prf:
 ..\..\QtEditorApp.pro:
+C:\Qt\6.7.2\msvc2019_64\lib\Qt6PrintSupport.prl:
 C:\Qt\6.7.2\msvc2019_64\lib\Qt6Widgets.prl:
 C:\Qt\6.7.2\msvc2019_64\lib\Qt6Gui.prl:
 C:\Qt\6.7.2\msvc2019_64\lib\Qt6Core.prl:
 C:\Qt\6.7.2\msvc2019_64\lib\Qt6EntryPoint.prl:
 C:\Qt\6.7.2\msvc2019_64\mkspecs\features\build_pass.prf:
 ..\..\qteditor.qrc:
+C:\Qt\6.7.2\msvc2019_64\lib\Qt6PrintSupportd.prl:
 C:\Qt\6.7.2\msvc2019_64\lib\Qt6Widgetsd.prl:
 C:\Qt\6.7.2\msvc2019_64\lib\Qt6Guid.prl:
 C:\Qt\6.7.2\msvc2019_64\lib\Qt6Cored.prl:

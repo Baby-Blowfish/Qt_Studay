@@ -2,12 +2,15 @@
 #define QTEDITOR_H
 
 #include <QMainWindow>
+#include <QList>
+#include <QHash>
 
 class QAction;
 class QMdiArea;
 class QTextEdit;
 class QFontComboBox;
 class QDoubleSpinBox;
+class QMdiSubWindow;
 
 class QtEditor : public QMainWindow
 {
@@ -29,6 +32,20 @@ public slots:
     void setFontWidget();
     void undo();
 
+
+    //void connectWindow(QMdiSubWindow*);
+
+    // c언어와 다르게 c++은 멤버함수를 선언한 후에 구현하지 않으면 error 발생!
+
+    /* help */
+    void about();
+
+    /* format */
+    void setColor();
+    void setFont();
+
+    void selectWindow();
+
 private:
     template <typename T>
     QAction *makeAction(QString icon, QString text, T shortCut, QString toolTip,
@@ -46,5 +63,13 @@ private:
 
     QFontComboBox *fontComboBox;
     QDoubleSpinBox *sizeSpinBox;
+
+    QList<QAction*> actions;
+    QTextEdit *prevTextEdit = nullptr;
+
+    QMenu *windowMenu;
+
+    QHash<QAction*,QWidget*> windowHash;
+
 };
 #endif // QTEDITOR_H
