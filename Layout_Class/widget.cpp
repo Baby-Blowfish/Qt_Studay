@@ -4,10 +4,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGridLayout>
-#define NO_OF_ROW 3
-#define NO_OF_colum 5
-
 #include <QStackedLayout>
+
 #include <QLabel>
 #include <QDial>
 #include <QCalendarWidget>
@@ -17,68 +15,80 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
     //------------------------------------<QHBoxLayout>--------------------------------------------
-    // pushbutton1 = new QPushButton("Button 1",this);
-    // pushbutton2 = new QPushButton("Button 2",this);
-    // pushbutton3 = new QPushButton("Button 3",this);
+    pushbuttonVBoxLayout[0] = new QPushButton("VBox Button 1",this);
+    pushbuttonVBoxLayout[1] = new QPushButton("VBox Button 2",this);
+    pushbuttonVBoxLayout[2] = new QPushButton("VBox Button 3",this);
 
-    //     // hBoxLayout = new QHBoxLayout(this);
-    //     // hBoxLayout -> setSpacing(6);
-    //     // hBoxLayout ->setContentsMargins(0,0,0,0);
-    //     // hBoxLayout -> addWidget(pushbutton1);
-    //     // hBoxLayout -> addWidget(pushbutton2);
-    //     // hBoxLayout -> addWidget(pushbutton3);
-    //     // setLayout(hBoxLayout);
+    pushbuttonHBoxLayout[0] = new QPushButton("HBox Button 4",this);
+    pushbuttonHBoxLayout[1] = new QPushButton("HBox Button 5",this);
+    pushbuttonHBoxLayout[2] = new QPushButton("HBox Button 6",this);
 
-    // vBoxLayout = new QVBoxLayout(this);
-    // vBoxLayout -> setSpacing(6);
-    // vBoxLayout ->setContentsMargins(0,0,0,0);
-    // vBoxLayout -> addWidget(pushbutton1);
-    // vBoxLayout -> addWidget(pushbutton2);
-    // vBoxLayout -> addWidget(pushbutton3);
-    // setLayout(vBoxLayout);
+    vBoxLayout = new QVBoxLayout();
+    vBoxLayout -> setSpacing(6);
+    vBoxLayout ->setContentsMargins(10,10,10,10);
+    vBoxLayout -> addWidget(pushbuttonVBoxLayout[0]);
+    vBoxLayout -> addWidget(pushbuttonVBoxLayout[1]);
+    vBoxLayout -> addWidget(pushbuttonVBoxLayout[2]);
+
+
+    hBoxLayout = new QHBoxLayout();
+    hBoxLayout -> setSpacing(6);
+    hBoxLayout ->setContentsMargins(0,0,0,0);
+    hBoxLayout -> addWidget(pushbuttonHBoxLayout[0]);
+    hBoxLayout -> addWidget(pushbuttonHBoxLayout[1]);
+    hBoxLayout -> addWidget(pushbuttonHBoxLayout[2]);
+
+    // Now combine the layouts
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->addLayout(vBoxLayout);  // Add the vertical layout
+    mainLayout->addLayout(hBoxLayout);  // Add the horizontal layout
+
+
 
 
 
     //------------------------------------<QGridLayout>--------------------------------------------
-    // gridLayout = new QGridLayout(this);
-    // //pushButton = new QPushButton[NO_OF_ROW*NO_OF_ROW];
-    // QPushButton *pushButton[NO_OF_ROW*NO_OF_colum];
-    // for(int y = 0; y <NO_OF_ROW;y++)
-    // {
-    //     for(int x = 0; x <NO_OF_ROW;x++)
-    //     {
-    //         int p = x+y*NO_OF_ROW;
-    //         QString str = QString("Button%1").arg(p+1);
-    //         pushButton[p] = new QPushButton(str,this);
-    //         gridLayout->addWidget(pushButton[p],x,y);
-    //     }
-    // }
-    //  //void QGridLayout::addWidget(QWidget *widget, int fromRow, int fromColumn, int rowSpan, \
-    //             int columnSpan, Qt::Alignment alignment = Qt::Alignment())
+    gridLayout = new QGridLayout(this);
+    for(int y = 0; y <NO_OF_ROW;y++)
+    {
+        for(int x = 0; x <NO_OF_colum;x++)
+        {
+            int p = x+y*NO_OF_colum;
+            QString str = QString("Grid Button %1").arg(p+1);
+            pushButtonGridLayout[p] = new QPushButton(str,this);
+            gridLayout->addWidget(pushButtonGridLayout[p],y,x);
+        }
+    }
+    mainLayout->addLayout(gridLayout);
 
-    // setLayout(gridLayout);
 
 
     //------------------------------------<QStackedLayout>--------------------------------------------
-    // QDial *dial = new QDial(this);
-    // dial -> setRange(0,2);
 
-    // QLabel *label = new QLabel("Stack1",this);
-    // QCalendarWidget *calendarWidget = new QCalendarWidget(this);
-    // QTextEdit *textEdit = new QTextEdit("Stack 3",this);
+    dial = new QDial(this);
+    dial -> setRange(0,2);
 
-    // QStackedLayout *stackedLayout = new QStackedLayout();
-    // stackedLayout->addWidget(label);
-    // stackedLayout->addWidget(calendarWidget);
-    // stackedLayout->addWidget(textEdit);
+    label = new QLabel("Stack label 1",this);
+    calendarWidget = new QCalendarWidget(this);
+    textEdit = new QTextEdit("Stack textedit  3",this);
 
-    // connect(dial,&QDial::valueChanged,stackedLayout,&QStackedLayout::setCurrentIndex);
+    QStackedLayout *stackedLayout = new QStackedLayout();
+    stackedLayout->addWidget(label);
+    stackedLayout->addWidget(calendarWidget);
+    stackedLayout->addWidget(textEdit);
 
-    // hBoxLayout = new QHBoxLayout(this);
-    // hBoxLayout->addWidget(dial);
-    // hBoxLayout->addLayout(stackedLayout);
+    connect(dial,&QDial::valueChanged,stackedLayout,&QStackedLayout::setCurrentIndex);
 
-    // setLayout(hBoxLayout);
+    hBoxLayout = new QHBoxLayout(this);
+    hBoxLayout->addWidget(dial);
+    hBoxLayout->addLayout(stackedLayout);
+
+    setLayout(hBoxLayout);
+
+
+
+    setLayout(mainLayout);  // Set the combined layout on the widget
+
 
 
 }

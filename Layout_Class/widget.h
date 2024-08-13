@@ -7,6 +7,14 @@ class QPushButton;
 class QHBoxLayout;
 class QVBoxLayout;
 class QGridLayout;
+class QDial;
+class QLabel;
+class QCalendarWidget;
+class QTextEdit;
+
+
+#define NO_OF_ROW 3
+#define NO_OF_colum 5
 
 class Widget : public QWidget
 {
@@ -17,15 +25,18 @@ public:
     ~Widget();
 
 private:
-    QPushButton *pushbutton1;
-    QPushButton *pushbutton2;
-    QPushButton *pushbutton3;
-    //QPushButton **pushButton;
+    QPushButton *pushbuttonVBoxLayout[3];
+    QPushButton *pushbuttonHBoxLayout[3];
+    QPushButton *pushButtonGridLayout[NO_OF_ROW*NO_OF_colum];
 
     QHBoxLayout *hBoxLayout;
     QVBoxLayout *vBoxLayout;
     QGridLayout *gridLayout;
 
+    QDial *dial;
+    QLabel *label;
+    QCalendarWidget *calendarWidget;
+    QTextEdit *textEdit;
 
 };
 #endif // WIDGET_H
