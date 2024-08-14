@@ -11,6 +11,11 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QGridLayout;
 
+class QLabel;
+class QDial;
+
+class QVBoxLayout;
+
 class Widget : public QWidget
 {
     Q_OBJECT
@@ -24,8 +29,13 @@ private:
     QFrame *raisedLine;
     QFrame *sunkenLine;
 
-    QHBoxLayout *hBoxLayout;
-    QVBoxLayout *vBoxLayout;
-    QGridLayout *gridLayout;
+    QLabel *label;
+    QLabel *label1;
+
+    QDial *dial;
+    QDial *dial1;
+    QDial *dial2;
+
+    QVBoxLayout *vBoxLayout; // 수직 레이아웃
 };
 #endif // WIDGET_H
