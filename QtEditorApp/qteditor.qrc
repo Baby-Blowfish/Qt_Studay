@@ -5,6 +5,5 @@
         <file>images/print.png</file>
         <file>images/quit.png</file>
         <file>images/save.png</file>
-        <file>images/saveAs.png</file>
     </qresource>
 </RCC>

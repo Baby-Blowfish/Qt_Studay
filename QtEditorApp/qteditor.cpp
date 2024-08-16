@@ -33,10 +33,6 @@ QtEditor::QtEditor(QWidget *parent)
     setCentralWidget(mdiArea);
 
 
-
-
-
-
     //------------------<QMainWindow>-----------------------------
     // QTextEdit *textedit = new QTextEdit(this);      // 여러 줄의 문자열 입력 위젯
     // setCentralWidget(textedit);     // 중앙 위젯 설정
@@ -73,31 +69,31 @@ QtEditor::QtEditor(QWidget *parent)
     // tr(QStirng st); 국제수행 메소드
 
     QAction *newAct = makeAction(":/images/new.png",tr("&New"),QKeySequence::New,
-                                tr("make new file"),this,SLOT(newFile()));
+                                tr("Make new file"),this,SLOT(newFile()));
         // 템플릿 사용 - enum
 
     QAction *saveAct = makeAction(":/images/save.png",tr("&Save"),tr("Ctrl+S"),
-                                  tr("save a file"),this,SLOT(saveFile()));
+                                  tr("Save this file"),this,SLOT(saveFile()));
         // 템플릿의 구체화 사용 - const char* 즉 문자열일 경우 동작 설정
 
     QAction *openAct = makeAction(":/images/open.png",tr("&Open"),tr("Ctrl+O"),
-                                  tr("open a file"),this,SLOT(openFile()));
+                                  tr("Open a file"),this,SLOT(openFile()));
         // 템플릿의 Functor를 사용하여 람다 함수 사용
 
-    QAction *saveAsAct = makeAction(":/images/saveAs.png",tr("&SaveAs"),tr("Ctrl+Shift+s"),
-                                  tr("save as a file"),this,SLOT(saveAsFile()));
+    QAction *saveAsAct = makeAction("",tr("Save&As"),tr("Ctrl+A"),
+                                  tr("Save as a file"),this,SLOT(saveAsFile()));
+
     QAction *printAct = makeAction(":/images/print.png",tr("&Print"),tr("Ctrl+P"),
-                                   tr("print a file"),this,SLOT(printFile()));
-    QAction *quitAct = makeAction(":/images/quit.png",tr("&Quit"),tr("Ctrl+Q"),
-                                 tr("quite file"),qApp,SLOT(quit()));
+                                   tr("Print  file"),this,SLOT(printFile()));
+
+    QAction *quitAct = makeAction(":/images/quit.png",tr("E&xit"),tr("Ctrl+Q"),
+                                 tr("Quite this program"),qApp,SLOT(quit()));
+
 
     QMenu *fileMenu = menubar->addMenu("&File");
     fileMenu->addAction(newAct);
-    fileMenu->addSeparator();
     fileMenu->addAction(openAct);
-    fileMenu->addSeparator();
     fileMenu->addAction(saveAct);
-    fileMenu->addSeparator();
     fileMenu->addAction(saveAsAct);
     fileMenu->addSeparator();
     fileMenu->addAction(printAct);
@@ -491,6 +487,14 @@ void QtEditor::printFile()
 }
 
 
+
+
+
+
+
+
+
+
 template <typename T>
 QAction *QtEditor::makeAction(QString icon, QString text, T shortCut, QString toolTip,
                     QObject* recv, const char* slot)
@@ -500,6 +504,7 @@ QAction *QtEditor::makeAction(QString icon, QString text, T shortCut, QString to
         act->setIcon(QIcon(icon));
     act->setShortcut(shortCut);
     act->setStatusTip(toolTip);
+
     connect(act,SIGNAL(triggered()),recv,slot);
     return act;
 }
@@ -520,20 +525,20 @@ QAction *QtEditor::makeAction(QString icon, QString text, const char* shortCut, 
 
 
 // // 람다 함수 사용
-// template <typename T, typename Functor>
-// QAction *QtEditor::makeAction(QString icon, QString text, T shortCut, QString toolTip,
-//                     Functor lambda)
-// {
-//     QAction *act = new QAction(text, this);
-//     if(icon.length())
-//         act->setIcon(QIcon(icon));
-//     QKeySequence keySequence(shortCut);
-//     act->setShortcut(keySequence);
-//     act->setStatusTip(toolTip);
-//     act->setToolTip(toolTip);
-//     connect(act,&QAction::triggered,this,lambda);
-//     return act;
-// }
+template <typename T, typename Functor>
+QAction *QtEditor::makeAction(QString icon, QString text, T shortCut, QString toolTip,
+                    Functor lambda)
+{
+    QAction *act = new QAction(text, this);
+    if(icon.length())
+        act->setIcon(QIcon(icon));
+    QKeySequence keySequence(shortCut);
+    act->setShortcut(keySequence);
+    act->setStatusTip(toolTip);
+    act->setToolTip(toolTip);
+    connect(act,&QAction::triggered,this,lambda);
+    return act;
+}
 
 void QtEditor::setTextFont(QFont font)
 {
