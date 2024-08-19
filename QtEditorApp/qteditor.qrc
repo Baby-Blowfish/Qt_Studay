@@ -1,9 +1,29 @@
 <RCC>
     <qresource prefix="/">
+        <file>images/cascade.png</file>
+        <file>images/copy.png</file>
+        <file>images/cut.png</file>
+        <file>images/exit.png</file>
         <file>images/new.png</file>
         <file>images/open.png</file>
+        <file>images/paste.png</file>
         <file>images/print.png</file>
         <file>images/quit.png</file>
+        <file>images/redo.png</file>
         <file>images/save.png</file>
+        <file>images/saveas.png</file>
+        <file>images/tile.png</file>
+        <file>images/undo.png</file>
+        <file>images/zoomin.png</file>
+        <file>images/zoomout.png</file>
+        <file>images/font.png</file>
+        <file>images/color.png</file>
+        <file>images/aligncenter.png</file>
+        <file>images/alignleft.png</file>
+        <file>images/alignright.png</file>
+        <file>images/justify.png</file>
+        <file>images/file.png</file>
+        <file>images/next.png</file>
+        <file>images/previous.png</file>
     </qresource>
 </RCC>

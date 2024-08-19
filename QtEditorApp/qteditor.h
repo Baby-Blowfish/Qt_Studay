@@ -22,29 +22,38 @@ public:
 
 
 public slots:
-    QTextEdit *newFile();
-    void saveFile();
-    void saveAsFile();
-    void openFile();
-    void printFile();
-    void setTextFont(QFont font);
-    void setTextSize(qreal size);
-    void setFontWidget();
-    void undo();
-
-
-    //void connectWindow(QMdiSubWindow*);
-
     // c언어와 다르게 c++은 멤버함수를 선언한 후에 구현하지 않으면 error 발생!
 
-    /* help */
-    void about();
+    /* File Menu */
+    QTextEdit *newFile();
+    void openFile( );
+    void saveFile( );
+    void saveAsFile( );
+    void printFile( );
 
-    /* format */
-    void setColor();
-    void setFont();
+    /* Edit Menu */
+    void undo( );
+    void redo( );
+    void copy( );
+    void cut( );
+    void paste( );
+    void zoomIn( );
+    void zoomOut( );
 
-    void selectWindow();
+    /* Format Menu */
+    void setFont( );
+    void setColor( );
+    void alignText( );
+
+    void setTextFont(QFont font);
+    void setTextSize(qreal size);
+
+    void setFontWidget( );
+    void selectWindow( );
+    //void closeWindow( );
+
+    /* Help Menu */
+    void about( );
 
 private:
     template <typename T>
@@ -60,6 +69,8 @@ private:
     QAction *makeAction(QString icon, QString text, T shortCut, QString toolTip,
                          Functor lambda);
     QMdiArea *mdiArea;
+
+    int newfilenum = 0;
 
     QFontComboBox *fontComboBox;
     QDoubleSpinBox *sizeSpinBox;

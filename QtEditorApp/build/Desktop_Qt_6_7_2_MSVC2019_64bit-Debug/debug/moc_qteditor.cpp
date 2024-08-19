@@ -39,20 +39,27 @@ constexpr auto qt_meta_stringdata_CLASSQtEditorENDCLASS = QtMocHelpers::stringDa
     "newFile",
     "QTextEdit*",
     "",
+    "openFile",
     "saveFile",
     "saveAsFile",
-    "openFile",
     "printFile",
+    "undo",
+    "redo",
+    "copy",
+    "cut",
+    "paste",
+    "zoomIn",
+    "zoomOut",
+    "setFont",
+    "setColor",
+    "alignText",
     "setTextFont",
     "font",
     "setTextSize",
     "size",
     "setFontWidget",
-    "undo",
-    "about",
-    "setColor",
-    "setFont",
-    "selectWindow"
+    "selectWindow",
+    "about"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -65,7 +72,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSQtEditorENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -73,19 +80,26 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSQtEditorENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   92,    3, 0x0a,    1 /* Public */,
-       4,    0,   93,    3, 0x0a,    2 /* Public */,
-       5,    0,   94,    3, 0x0a,    3 /* Public */,
-       6,    0,   95,    3, 0x0a,    4 /* Public */,
-       7,    0,   96,    3, 0x0a,    5 /* Public */,
-       8,    1,   97,    3, 0x0a,    6 /* Public */,
-      10,    1,  100,    3, 0x0a,    8 /* Public */,
-      12,    0,  103,    3, 0x0a,   10 /* Public */,
-      13,    0,  104,    3, 0x0a,   11 /* Public */,
-      14,    0,  105,    3, 0x0a,   12 /* Public */,
-      15,    0,  106,    3, 0x0a,   13 /* Public */,
-      16,    0,  107,    3, 0x0a,   14 /* Public */,
-      17,    0,  108,    3, 0x0a,   15 /* Public */,
+       1,    0,  134,    3, 0x0a,    1 /* Public */,
+       4,    0,  135,    3, 0x0a,    2 /* Public */,
+       5,    0,  136,    3, 0x0a,    3 /* Public */,
+       6,    0,  137,    3, 0x0a,    4 /* Public */,
+       7,    0,  138,    3, 0x0a,    5 /* Public */,
+       8,    0,  139,    3, 0x0a,    6 /* Public */,
+       9,    0,  140,    3, 0x0a,    7 /* Public */,
+      10,    0,  141,    3, 0x0a,    8 /* Public */,
+      11,    0,  142,    3, 0x0a,    9 /* Public */,
+      12,    0,  143,    3, 0x0a,   10 /* Public */,
+      13,    0,  144,    3, 0x0a,   11 /* Public */,
+      14,    0,  145,    3, 0x0a,   12 /* Public */,
+      15,    0,  146,    3, 0x0a,   13 /* Public */,
+      16,    0,  147,    3, 0x0a,   14 /* Public */,
+      17,    0,  148,    3, 0x0a,   15 /* Public */,
+      18,    1,  149,    3, 0x0a,   16 /* Public */,
+      20,    1,  152,    3, 0x0a,   18 /* Public */,
+      22,    0,  155,    3, 0x0a,   20 /* Public */,
+      23,    0,  156,    3, 0x0a,   21 /* Public */,
+      24,    0,  157,    3, 0x0a,   22 /* Public */,
 
  // slots: parameters
     0x80000000 | 2,
@@ -93,11 +107,18 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSQtEditorENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QFont,    9,
-    QMetaType::Void, QMetaType::QReal,   11,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QFont,   19,
+    QMetaType::Void, QMetaType::QReal,   21,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -116,13 +137,33 @@ Q_CONSTINIT const QMetaObject QtEditor::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<QtEditor, std::true_type>,
         // method 'newFile'
         QtPrivate::TypeAndForceComplete<QTextEdit *, std::false_type>,
+        // method 'openFile'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'saveFile'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'saveAsFile'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'openFile'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'printFile'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'undo'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'redo'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'copy'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'cut'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'paste'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'zoomIn'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'zoomOut'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'setFont'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'setColor'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'alignText'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'setTextFont'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
@@ -132,15 +173,9 @@ Q_CONSTINIT const QMetaObject QtEditor::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<qreal, std::false_type>,
         // method 'setFontWidget'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'undo'
+        // method 'selectWindow'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'about'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'setColor'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'setFont'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'selectWindow'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -154,18 +189,25 @@ void QtEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         switch (_id) {
         case 0: { QTextEdit* _r = _t->newFile();
             if (_a[0]) *reinterpret_cast< QTextEdit**>(_a[0]) = std::move(_r); }  break;
-        case 1: _t->saveFile(); break;
-        case 2: _t->saveAsFile(); break;
-        case 3: _t->openFile(); break;
+        case 1: _t->openFile(); break;
+        case 2: _t->saveFile(); break;
+        case 3: _t->saveAsFile(); break;
         case 4: _t->printFile(); break;
-        case 5: _t->setTextFont((*reinterpret_cast< std::add_pointer_t<QFont>>(_a[1]))); break;
-        case 6: _t->setTextSize((*reinterpret_cast< std::add_pointer_t<qreal>>(_a[1]))); break;
-        case 7: _t->setFontWidget(); break;
-        case 8: _t->undo(); break;
-        case 9: _t->about(); break;
-        case 10: _t->setColor(); break;
-        case 11: _t->setFont(); break;
-        case 12: _t->selectWindow(); break;
+        case 5: _t->undo(); break;
+        case 6: _t->redo(); break;
+        case 7: _t->copy(); break;
+        case 8: _t->cut(); break;
+        case 9: _t->paste(); break;
+        case 10: _t->zoomIn(); break;
+        case 11: _t->zoomOut(); break;
+        case 12: _t->setFont(); break;
+        case 13: _t->setColor(); break;
+        case 14: _t->alignText(); break;
+        case 15: _t->setTextFont((*reinterpret_cast< std::add_pointer_t<QFont>>(_a[1]))); break;
+        case 16: _t->setTextSize((*reinterpret_cast< std::add_pointer_t<qreal>>(_a[1]))); break;
+        case 17: _t->setFontWidget(); break;
+        case 18: _t->selectWindow(); break;
+        case 19: _t->about(); break;
         default: ;
         }
     }
@@ -190,13 +232,13 @@ int QtEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 20;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 20)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 13;
+        _id -= 20;
     }
     return _id;
 }
